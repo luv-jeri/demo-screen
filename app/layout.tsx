@@ -1,21 +1,48 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { AppShell } from "@/components/app-shell";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const hafferXH = localFont({
+  src: [
+    {
+      path: "../Haffer-Font/HafferXH-TRIAL-Bold.otf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../Haffer-Font/HafferXH-TRIAL-Heavy.otf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-heading",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const hafferSans = localFont({
+  src: [
+    {
+      path: "../Haffer-Font/Haffer-TRIAL-Regular.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../Haffer-Font/Haffer-TRIAL-Medium.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../Haffer-Font/Haffer-TRIAL-SemiBold.otf",
+      weight: "600",
+      style: "normal",
+    },
+  ],
+  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
-  title: "Acme Dashboard",
-  description: "Modern enterprise dashboard with beautiful UI",
+  title: "V2 / OSMO INSPIRED",
+  description: "A premium visual overhaul.",
 };
 
 export default function RootLayout({
@@ -26,7 +53,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
+        className={`${hafferXH.variable} ${hafferSans.variable} antialiased bg-background text-foreground selection:bg-accent selection:text-accent-foreground`}
       >
         <AppShell>{children}</AppShell>
       </body>

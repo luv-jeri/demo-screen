@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { TypingAnimation } from "@/components/ui/typing-animation";
 import {
   Select,
   SelectContent,
@@ -41,24 +42,15 @@ const quickFilters = [
   { value: "verified", label: "Verified" },
 ];
 
-// Get greeting based on time
-function getGreeting(): string {
-  const hour = new Date().getHours();
-  if (hour >= 5 && hour < 12) return "Good morning";
-  if (hour >= 12 && hour < 17) return "Good afternoon";
-  if (hour >= 17 && hour < 21) return "Good evening";
-  return "Good night";
-}
+
 
 interface SearchBarProps {
   className?: string;
-  userName?: string;
   onSearch?: (query: string, category: string, mode: "search" | "chat") => void;
 }
 
 export function SearchBar({
   className,
-  userName = "there",
   onSearch,
 }: SearchBarProps) {
   const [query, setQuery] = React.useState("");
@@ -114,32 +106,21 @@ export function SearchBar({
     dateRange !== "all-time" ||
     contentType !== "all";
 
-  const greeting = getGreeting();
 
   return (
     <div className={cn("w-full max-w-3xl mx-auto", className)}>
-      {/* Header with personalized greeting */}
-      <div className="text-center mb-6">
-        <h1 className="text-2xl md:text-3xl font-semibold tracking-tight mb-2">
-          {greeting}, {userName}{" "}
-          <span className="inline-block animate-pulse">👋</span>
-        </h1>
-        <p className="text-muted-foreground text-sm md:text-base">
-          How can I help you today?
-        </p>
-      </div>
 
-      {/* Mode Toggle - Search vs Chat with animated highlight */}
-      <div className="flex items-center justify-center mb-4">
-        <div className="inline-flex items-center gap-1 p-1 rounded-lg bg-muted/50 border border-border">
+      {/* Mode Toggle - Search vs Chat with solid background and sharp corners */}
+      <div className="flex items-center justify-center mb-6">
+        <div className="inline-flex items-center gap-1 p-1 bg-muted border border-border shadow-sm rounded-sm">
           <button
             type="button"
             onClick={() => setMode("search")}
             className={cn(
-              "relative flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-300",
+              "relative flex items-center gap-2 px-6 py-2.5 rounded-sm text-[15px] font-medium transition-all duration-300",
               mode === "search"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-accent text-accent-foreground shadow-sm"
+                : "text-foreground/60 hover:text-foreground"
             )}
           >
             <Search className="size-4" />
@@ -149,10 +130,10 @@ export function SearchBar({
             type="button"
             onClick={() => setMode("chat")}
             className={cn(
-              "relative flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-300",
+              "relative flex items-center gap-2 px-6 py-2.5 rounded-sm text-[15px] font-medium transition-all duration-300",
               mode === "chat"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-accent text-accent-foreground shadow-sm"
+                : "text-foreground/60 hover:text-foreground"
             )}
           >
             <MessageSquare className="size-4" />
@@ -163,10 +144,10 @@ export function SearchBar({
 
       {/* Search Bar Container */}
       <form onSubmit={handleSubmit} className="relative">
-        <div className="flex items-center gap-0 rounded-xl border border-border bg-card shadow-sm transition-all duration-200 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background">
+        <div className="flex items-center gap-0 border border-border bg-card shadow-lg shadow-black/5 rounded-sm transition-all duration-300 focus-within:ring-2 focus-within:ring-accent focus-within:border-accent hover:border-primary/50">
           {/* Category Selector */}
           <Select value={category} onValueChange={setCategory}>
-            <SelectTrigger className="w-[140px] md:w-[160px] border-0 bg-transparent rounded-l-xl rounded-r-none focus:ring-0 focus:ring-offset-0 h-12 md:h-14 pl-4 text-sm font-medium">
+            <SelectTrigger className="w-[140px] md:w-[160px] border-0 bg-transparent rounded-none focus:ring-0 focus:ring-offset-0 h-14 md:h-16 pl-5 text-[15px] font-medium">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
@@ -181,8 +162,8 @@ export function SearchBar({
           {/* Divider */}
           <div className="w-px h-6 bg-border" />
 
-          {/* Search Input */}
-          <div className="flex-1 flex items-center">
+          {/* Search Input with Typing Animation Placeholder */}
+          <div className="flex-1 flex items-center relative">
             {mode === "search" ? (
               <Search className="ml-3 size-4 text-muted-foreground shrink-0" />
             ) : (
@@ -194,20 +175,35 @@ export function SearchBar({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={
-                mode === "search"
-                  ? "Search your knowledge base..."
-                  : "Start a conversation..."
-              }
-              className="flex-1 h-12 md:h-14 px-3 bg-transparent text-sm md:text-base placeholder:text-muted-foreground focus:outline-none"
+              className="flex-1 h-14 md:h-16 px-3 bg-transparent text-[15px] md:text-base focus:outline-none"
             />
+            {/* Animated placeholder when input is empty */}
+            {!query && (
+              <div className="absolute left-10 top-1/2 -translate-y-1/2 text-muted-foreground text-sm md:text-base pointer-events-none flex items-center">
+                <span>Try:&nbsp;</span>
+                <span className="inline-block min-w-[280px]">
+                  <TypingAnimation
+                    words={[
+                      "How to get started?",
+                      "API documentation",
+                      "Best practices",
+                      "Search your knowledge base...",
+                    ]}
+                    typeSpeed={40}
+                    deleteSpeed={25}
+                    pauseDelay={1200}
+                  />
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Submit Button */}
           <Button
             type="submit"
             size="icon"
-            className="h-10 w-10 md:h-11 md:w-11 rounded-lg mr-1.5 shrink-0 transition-transform duration-200 hover:scale-105 active:scale-95"
+            variant="accent"
+            className="h-10 w-10 md:h-11 md:w-11 mr-1.5 shrink-0 transition-transform duration-200 hover:scale-105 active:scale-95"
             disabled={!query.trim()}
           >
             <ArrowRight className="size-4 md:size-5" />
@@ -230,10 +226,10 @@ export function SearchBar({
                 type="button"
                 onClick={() => toggleQuickFilter(filter.value)}
                 className={cn(
-                  "text-xs px-2.5 py-1 rounded-full border transition-all duration-200",
+                  "text-xs px-3 py-1.5 uppercase tracking-wider border transition-all duration-300",
                   activeQuickFilters.includes(filter.value)
-                    ? "bg-primary text-primary-foreground border-primary scale-105"
-                    : "border-border bg-muted/50 hover:bg-muted hover:scale-105"
+                    ? "bg-accent text-accent-foreground border-accent"
+                    : "border-border bg-transparent hover:bg-accent hover:text-accent-foreground hover:border-accent"
                 )}
               >
                 {filter.label}
@@ -313,25 +309,6 @@ export function SearchBar({
         </CollapsibleContent>
       </Collapsible>
 
-      {/* Quick suggestions */}
-      <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
-        <span className="text-xs text-muted-foreground">Try:</span>
-        {["How to get started?", "API documentation", "Best practices"].map(
-          (suggestion) => (
-            <button
-              key={suggestion}
-              type="button"
-              onClick={() => {
-                setQuery(suggestion);
-                inputRef.current?.focus();
-              }}
-              className="text-xs px-2.5 py-1 rounded-full border border-border bg-muted/50 hover:bg-muted transition-all duration-200 hover:scale-105"
-            >
-              {suggestion}
-            </button>
-          )
-        )}
-      </div>
     </div>
   );
 }
