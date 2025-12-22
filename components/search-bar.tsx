@@ -5,10 +5,10 @@ import {
   ArrowRight,
   Search,
   MessageSquare,
-  Filter,
   SlidersHorizontal,
   X,
   Sparkles,
+  ChevronDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -20,10 +20,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/animate-ui/primitives/radix/collapsible";
 
 // Mock categories for the dropdown
 const categories = [
@@ -68,6 +68,8 @@ export function SearchBar({
     []
   );
   const [showAdvancedFilters, setShowAdvancedFilters] = React.useState(false);
+  const [dateRange, setDateRange] = React.useState("all-time");
+  const [contentType, setContentType] = React.useState("all");
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -78,6 +80,8 @@ export function SearchBar({
         category,
         mode,
         quickFilters: activeQuickFilters,
+        dateRange,
+        contentType,
       });
       onSearch?.(query, category, mode);
     }
@@ -100,7 +104,15 @@ export function SearchBar({
   const clearFilters = () => {
     setActiveQuickFilters([]);
     setCategory("all");
+    setDateRange("all-time");
+    setContentType("all");
   };
+
+  const hasActiveFilters =
+    activeQuickFilters.length > 0 ||
+    category !== "all" ||
+    dateRange !== "all-time" ||
+    contentType !== "all";
 
   const greeting = getGreeting();
 
@@ -109,35 +121,44 @@ export function SearchBar({
       {/* Header with personalized greeting */}
       <div className="text-center mb-6">
         <h1 className="text-2xl md:text-3xl font-semibold tracking-tight mb-2">
-          {greeting}, {userName} <span className="inline-block animate-pulse">👋</span>
+          {greeting}, {userName}{" "}
+          <span className="inline-block animate-pulse">👋</span>
         </h1>
         <p className="text-muted-foreground text-sm md:text-base">
           How can I help you today?
         </p>
       </div>
 
-      {/* Mode Toggle - Search vs Chat */}
-      <div className="flex items-center justify-center gap-2 mb-4">
-        <Button
-          type="button"
-          variant={mode === "search" ? "default" : "outline"}
-          size="sm"
-          onClick={() => setMode("search")}
-          className="gap-2"
-        >
-          <Search className="size-4" />
-          Search
-        </Button>
-        <Button
-          type="button"
-          variant={mode === "chat" ? "default" : "outline"}
-          size="sm"
-          onClick={() => setMode("chat")}
-          className="gap-2"
-        >
-          <MessageSquare className="size-4" />
-          Conversation
-        </Button>
+      {/* Mode Toggle - Search vs Chat with animated highlight */}
+      <div className="flex items-center justify-center mb-4">
+        <div className="inline-flex items-center gap-1 p-1 rounded-lg bg-muted/50 border border-border">
+          <button
+            type="button"
+            onClick={() => setMode("search")}
+            className={cn(
+              "relative flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-300",
+              mode === "search"
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <Search className="size-4" />
+            Search
+          </button>
+          <button
+            type="button"
+            onClick={() => setMode("chat")}
+            className={cn(
+              "relative flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-300",
+              mode === "chat"
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <MessageSquare className="size-4" />
+            Conversation
+          </button>
+        </div>
       </div>
 
       {/* Search Bar Container */}
@@ -186,7 +207,7 @@ export function SearchBar({
           <Button
             type="submit"
             size="icon"
-            className="h-10 w-10 md:h-11 md:w-11 rounded-lg mr-1.5 shrink-0"
+            className="h-10 w-10 md:h-11 md:w-11 rounded-lg mr-1.5 shrink-0 transition-transform duration-200 hover:scale-105 active:scale-95"
             disabled={!query.trim()}
           >
             <ArrowRight className="size-4 md:size-5" />
@@ -197,53 +218,68 @@ export function SearchBar({
         </div>
       </form>
 
-      {/* Quick Filters & Advanced Filters */}
-      <div className="flex flex-wrap items-center justify-between gap-2 mt-4">
-        {/* Quick Filters */}
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs text-muted-foreground">Quick filters:</span>
-          {quickFilters.map((filter) => (
-            <button
-              key={filter.value}
-              type="button"
-              onClick={() => toggleQuickFilter(filter.value)}
-              className={cn(
-                "text-xs px-2.5 py-1 rounded-full border transition-colors",
-                activeQuickFilters.includes(filter.value)
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "border-border bg-muted/50 hover:bg-muted"
-              )}
-            >
-              {filter.label}
-            </button>
-          ))}
-          {activeQuickFilters.length > 0 && (
-            <button
-              type="button"
-              onClick={clearFilters}
-              className="text-xs px-2 py-1 text-muted-foreground hover:text-foreground flex items-center gap-1"
-            >
-              <X className="size-3" />
-              Clear
-            </button>
-          )}
-        </div>
+      {/* Collapsible Filters Section */}
+      <Collapsible open={showAdvancedFilters} onOpenChange={setShowAdvancedFilters}>
+        <div className="flex flex-wrap items-center justify-between gap-2 mt-4">
+          {/* Quick Filters */}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs text-muted-foreground">Quick filters:</span>
+            {quickFilters.map((filter) => (
+              <button
+                key={filter.value}
+                type="button"
+                onClick={() => toggleQuickFilter(filter.value)}
+                className={cn(
+                  "text-xs px-2.5 py-1 rounded-full border transition-all duration-200",
+                  activeQuickFilters.includes(filter.value)
+                    ? "bg-primary text-primary-foreground border-primary scale-105"
+                    : "border-border bg-muted/50 hover:bg-muted hover:scale-105"
+                )}
+              >
+                {filter.label}
+              </button>
+            ))}
+            {hasActiveFilters && (
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="text-xs px-2 py-1 text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
+              >
+                <X className="size-3" />
+                Clear all
+              </button>
+            )}
+          </div>
 
-        {/* Advanced Filters */}
-        <Popover open={showAdvancedFilters} onOpenChange={setShowAdvancedFilters}>
-          <PopoverTrigger asChild>
-            <Button variant="ghost" size="sm" className="gap-2 text-xs">
+          {/* Advanced Filters Toggle */}
+          <CollapsibleTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-2 text-xs transition-all duration-200 hover:scale-105"
+            >
               <SlidersHorizontal className="size-3.5" />
               Advanced
+              <ChevronDown
+                className={cn(
+                  "size-3 transition-transform duration-200",
+                  showAdvancedFilters ? "rotate-180" : ""
+                )}
+              />
             </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-72" align="end">
-            <div className="space-y-4">
-              <div className="font-medium text-sm">Advanced Filters</div>
+          </CollapsibleTrigger>
+        </div>
+
+        {/* Advanced Filters Content */}
+        <CollapsibleContent>
+          <div className="mt-4 p-4 rounded-lg border border-border bg-muted/30 space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-xs text-muted-foreground">Date Range</label>
-                <Select defaultValue="all-time">
-                  <SelectTrigger className="h-8 text-xs">
+                <label className="text-xs font-medium text-muted-foreground">
+                  Date Range
+                </label>
+                <Select value={dateRange} onValueChange={setDateRange}>
+                  <SelectTrigger className="h-9 text-sm">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -256,35 +292,26 @@ export function SearchBar({
                 </Select>
               </div>
               <div className="space-y-2">
-                <label className="text-xs text-muted-foreground">Content Type</label>
-                <Select defaultValue="all">
-                  <SelectTrigger className="h-8 text-xs">
+                <label className="text-xs font-medium text-muted-foreground">
+                  Content Type
+                </label>
+                <Select value={contentType} onValueChange={setContentType}>
+                  <SelectTrigger className="h-9 text-sm">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All types</SelectItem>
-                    <SelectItem value="articles">Articles</SelectItem>
-                    <SelectItem value="docs">Documents</SelectItem>
-                    <SelectItem value="media">Media</SelectItem>
+                    <SelectItem value="images">Images</SelectItem>
+                    <SelectItem value="videos">Videos</SelectItem>
+                    <SelectItem value="audio">Audio</SelectItem>
+                    <SelectItem value="documents">Documents</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-              <div className="flex justify-end gap-2 pt-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowAdvancedFilters(false)}
-                >
-                  Cancel
-                </Button>
-                <Button size="sm" onClick={() => setShowAdvancedFilters(false)}>
-                  Apply
-                </Button>
-              </div>
             </div>
-          </PopoverContent>
-        </Popover>
-      </div>
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
 
       {/* Quick suggestions */}
       <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
@@ -298,7 +325,7 @@ export function SearchBar({
                 setQuery(suggestion);
                 inputRef.current?.focus();
               }}
-              className="text-xs px-2.5 py-1 rounded-full border border-border bg-muted/50 hover:bg-muted transition-colors"
+              className="text-xs px-2.5 py-1 rounded-full border border-border bg-muted/50 hover:bg-muted transition-all duration-200 hover:scale-105"
             >
               {suggestion}
             </button>
