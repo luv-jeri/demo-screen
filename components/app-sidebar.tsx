@@ -35,7 +35,6 @@ import {
   SidebarMenuItem,
   SidebarRail,
   SidebarSeparator,
-  SidebarTrigger,
 } from "@/components/animate-ui/components/radix/sidebar";
 import {
   DropdownMenu,
@@ -127,7 +126,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   DAM Platform
                 </span>
               </div>
-              <SidebarTrigger className="ml-auto size-6 opacity-0 group-hover/brand:opacity-100 transition-opacity" />
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
