@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import {
   Command,
   ChevronUp,
+  ChevronDown,
   User2,
   MessageSquare,
   Search,
@@ -14,6 +15,7 @@ import {
   LogOut,
   CreditCard,
   History,
+  PanelLeftClose,
 } from "lucide-react";
 
 import {
@@ -35,7 +37,13 @@ import {
   SidebarMenuItem,
   SidebarRail,
   SidebarSeparator,
+  useSidebar,
 } from "@/components/animate-ui/components/radix/sidebar";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/animate-ui/primitives/radix/collapsible";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -44,6 +52,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 function NavItems({ items }: { items: NavItem[] }) {
   const pathname = usePathname();
@@ -75,7 +84,7 @@ function NavItems({ items }: { items: NavItem[] }) {
 function DrawerItems({ items }: { items: DrawerItem[] }) {
   return (
     <SidebarMenu>
-      {items.map((item) => (
+      {items.slice(0, 5).map((item) => (
         <SidebarMenuItem key={item.id}>
           <SidebarMenuButton
             asChild
@@ -97,8 +106,44 @@ function DrawerItems({ items }: { items: DrawerItem[] }) {
   );
 }
 
+// Collapsible navigation group
+function CollapsibleNavGroup({
+  label,
+  items,
+  defaultOpen = true,
+}: {
+  label: string;
+  items: NavItem[];
+  defaultOpen?: boolean;
+}) {
+  const [isOpen, setIsOpen] = React.useState(defaultOpen);
+
+  return (
+    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+      <SidebarGroup className="py-1">
+        <CollapsibleTrigger asChild>
+          <SidebarGroupLabel className="text-xs uppercase tracking-wider text-muted-foreground/70 cursor-pointer hover:text-muted-foreground transition-colors flex items-center justify-between pr-2">
+            <span>{label}</span>
+            <ChevronDown
+              className={`size-3 transition-transform duration-200 ${
+                isOpen ? "rotate-0" : "-rotate-90"
+              }`}
+            />
+          </SidebarGroupLabel>
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <SidebarGroupContent>
+            <NavItems items={items} />
+          </SidebarGroupContent>
+        </CollapsibleContent>
+      </SidebarGroup>
+    </Collapsible>
+  );
+}
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const [isDarkMode, setIsDarkMode] = React.useState(false);
+  const { toggleSidebar, state } = useSidebar();
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -107,9 +152,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      {/* Header with brand and toggle */}
-      <SidebarHeader>
-        <SidebarMenu>
+      {/* Header with brand and close button */}
+      <SidebarHeader className="flex-row items-center justify-between">
+        <SidebarMenu className="flex-1">
           <SidebarMenuItem>
             <SidebarMenuButton
               size="lg"
@@ -129,35 +174,54 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
+        {/* Close/Toggle Button - only visible when expanded */}
+        {state === "expanded" && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleSidebar}
+            className="size-8 shrink-0"
+          >
+            <PanelLeftClose className="size-4" />
+            <span className="sr-only">Close sidebar</span>
+          </Button>
+        )}
       </SidebarHeader>
 
       <SidebarSeparator className="mx-0" />
 
-      {/* Main navigation */}
-      <SidebarContent>
-        {navigationGroups.map((group) => (
-          <SidebarGroup key={group.label}>
-            <SidebarGroupLabel className="text-xs uppercase tracking-wider text-muted-foreground/70">
-              {group.label}
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              <NavItems items={group.items} />
-            </SidebarGroupContent>
-          </SidebarGroup>
+      {/* Main navigation with collapsible groups - no scrollbar */}
+      <SidebarContent className="scrollbar-none overflow-y-auto">
+        {navigationGroups.map((group, index) => (
+          <CollapsibleNavGroup
+            key={group.label}
+            label={group.label}
+            items={group.items}
+            defaultOpen={index < 2} // Only first 2 groups open by default
+          />
         ))}
 
         <SidebarSeparator className="mx-2" />
 
-        {/* Drawers - Saved Chats & Searches */}
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-xs uppercase tracking-wider text-muted-foreground/70 flex items-center gap-2">
-            <History className="size-3" />
-            Drawers
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <DrawerItems items={recentDrawers} />
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {/* Drawers - Saved Chats & Searches (collapsible) */}
+        <Collapsible defaultOpen>
+          <SidebarGroup className="py-1">
+            <CollapsibleTrigger asChild>
+              <SidebarGroupLabel className="text-xs uppercase tracking-wider text-muted-foreground/70 cursor-pointer hover:text-muted-foreground transition-colors flex items-center gap-2 justify-between pr-2">
+                <span className="flex items-center gap-2">
+                  <History className="size-3" />
+                  Drawers
+                </span>
+                <ChevronDown className="size-3 transition-transform duration-200 [[data-state=closed]_&]:-rotate-90" />
+              </SidebarGroupLabel>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <SidebarGroupContent>
+                <DrawerItems items={recentDrawers} />
+              </SidebarGroupContent>
+            </CollapsibleContent>
+          </SidebarGroup>
+        </Collapsible>
       </SidebarContent>
 
       <SidebarSeparator className="mx-0" />
