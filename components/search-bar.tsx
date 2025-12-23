@@ -134,8 +134,6 @@ export function SearchBar({ isHero = false }: SearchBarProps) {
   const [selectedQuickFilters, setSelectedQuickFilters] = React.useState<string[]>([]);
   
   // Toggle Quick Filter
-  // Marquee state
-  const [isHoveringMarquee, setIsHoveringMarquee] = React.useState(false);
 
   const toggleQuickFilter = (id: string) => {
     setSelectedQuickFilters(prev => 
@@ -153,6 +151,9 @@ export function SearchBar({ isHero = false }: SearchBarProps) {
   const [phase, setPhase] = React.useState<"typing" | "pausing" | "deleting">("typing");
 
   React.useEffect(() => {
+    // Performance: Don't run typewriter when user is interacting
+    if (isFocused || query.length > 0) return;
+
     const currentPhrases = PLACEHOLDERS[mode];
     const currentPhrase = currentPhrases[phraseIndex % currentPhrases.length];
 
@@ -185,7 +186,7 @@ export function SearchBar({ isHero = false }: SearchBarProps) {
     }
 
     return () => clearTimeout(timeout);
-  }, [placeholder, phase, phraseIndex, mode]);
+  }, [placeholder, phase, phraseIndex, mode, isFocused, query]);
 
   // Reset on mode change
   React.useEffect(() => {
@@ -195,58 +196,29 @@ export function SearchBar({ isHero = false }: SearchBarProps) {
   }, [mode]);
 
   // --------------------------------------------------------------------------
-  // Scroll Logic (JS Marquee)
+  // Scroll Logic (CSS Marquee - Performance Optimized)
   // --------------------------------------------------------------------------
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
-  const scrollPosRef = React.useRef<number>(0);
-  const animationRef = React.useRef<number | null>(null);
 
+  // Performance: Use CSS animation instead of requestAnimationFrame
+  // The marquee now uses CSS translate animation which runs on GPU
+  // Manual wheel scroll still supported via event handler
   React.useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    const scrollSpeed = 0.5; // Smooth, visible speed
-    
-    // Animation Loop
-    const animate = () => {
-      if (!isHoveringMarquee && container) {
-        // Increment precise float position
-        scrollPosRef.current += scrollSpeed;
-        
-        // Endless Loop Logic (Reset at 1/4 of total width since we have 4 sets)
-        // Or safely half of scrollWidth if content is identical. 
-        // We will just write the float value to the DOM.
-        container.scrollLeft = scrollPosRef.current;
-        
-        // Loop point: If we exceed half the content, reset.
-        if (scrollPosRef.current >= (container.scrollWidth / 2)) {
-             scrollPosRef.current = 0;
-             container.scrollLeft = 0;
-        }
-      } else if (container) {
-          // Sync ref if user scrolled manually
-          scrollPosRef.current = container.scrollLeft;
-      }
-      animationRef.current = requestAnimationFrame(animate);
-    };
-
-    // Start Animation
-    animationRef.current = requestAnimationFrame(animate);
-
-    // Manual Wheel Scroll
+    // Manual Wheel Scroll (only JS-based interaction needed)
     const handleWheel = (evt: WheelEvent) => {
       evt.preventDefault();
       container.scrollLeft += evt.deltaY;
-      scrollPosRef.current = container.scrollLeft; // Sync accumulator
     };
 
     container.addEventListener("wheel", handleWheel, { passive: false });
 
     return () => {
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
       container.removeEventListener("wheel", handleWheel);
     };
-  }, [isHoveringMarquee]);
+  }, []);
 
   return (
     <div className={cn(
@@ -535,12 +507,11 @@ export function SearchBar({ isHero = false }: SearchBarProps) {
 
           <div 
              ref={scrollContainerRef}
-             className="relative w-full overflow-x-auto no-scrollbar mask-gradient-x fade-mask-x py-2 cursor-grab active:cursor-grabbing"
-             onMouseEnter={() => setIsHoveringMarquee(true)}
-             onMouseLeave={() => setIsHoveringMarquee(false)}
+             className="relative w-full overflow-x-hidden no-scrollbar mask-gradient-x fade-mask-x py-2"
           >
+              {/* CSS-based marquee animation - GPU accelerated, no JS needed */}
               <div 
-                 className="flex items-center gap-3 w-max px-4"
+                 className="flex items-center gap-3 w-max px-4 animate-marquee hover:pause-on-hover"
               >
                   {[...QUICK_FILTERS, ...QUICK_FILTERS].map((filter, i) => {
                       // Unique key for duplicated items

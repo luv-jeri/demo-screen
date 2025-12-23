@@ -171,21 +171,23 @@ function BentoItem({ widget, isEditMode, onResize, onRemove }: BentoItemProps) {
   );
 }
 
+// Performance: Memoize to prevent rerenders when parent state changes
+const MemoizedBentoItem = React.memo(BentoItem);
+
 // ============================================================================
 // Main Application Grid
 // ============================================================================
 
 export function BentoGrid() {
-  const { 
-    widgets, 
-    isEditMode, 
-    toggleEditMode,
-    setWidgets, 
-    updateWidgetSize, 
-    removeWidget,
-    addWidget,
-    resetLayout
-  } = useBentoStore();
+  // Performance: Use atomic Zustand selectors to minimize rerender scope
+  const widgets = useBentoStore((state) => state.widgets);
+  const isEditMode = useBentoStore((state) => state.isEditMode);
+  const toggleEditMode = useBentoStore((state) => state.toggleEditMode);
+  const setWidgets = useBentoStore((state) => state.setWidgets);
+  const updateWidgetSize = useBentoStore((state) => state.updateWidgetSize);
+  const removeWidget = useBentoStore((state) => state.removeWidget);
+  const addWidget = useBentoStore((state) => state.addWidget);
+  const resetLayout = useBentoStore((state) => state.resetLayout);
 
   const [activeId, setActiveId] = React.useState<string | null>(null);
 
@@ -194,11 +196,11 @@ export function BentoGrid() {
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
-  const handleDragStart = (event: DragStartEvent) => {
+  const handleDragStart = React.useCallback((event: DragStartEvent) => {
     setActiveId(event.active.id as string);
-  };
+  }, []);
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = React.useCallback((event: DragEndEvent) => {
     const { active, over } = event;
     
     if (over && active.id !== over.id) {
@@ -208,7 +210,16 @@ export function BentoGrid() {
       setWidgets(newWidgets);
     }
     setActiveId(null);
-  };
+  }, [widgets, setWidgets]);
+
+  // Performance: Memoize handlers passed to children
+  const handleResize = React.useCallback((id: string, size: WidgetSize) => {
+    updateWidgetSize(id, size);
+  }, [updateWidgetSize]);
+
+  const handleRemove = React.useCallback((id: string) => {
+    removeWidget(id);
+  }, [removeWidget]);
   
 
 
@@ -307,20 +318,20 @@ export function BentoGrid() {
             items={widgets.map(w => w.id)}
             strategy={rectSortingStrategy}
         >
-          <motion.div
-            layout
+          {/* Performance: Removed motion.div layout prop - it was causing all widgets to animate on any state change */}
+          <div
             className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[150px] pb-20"
           >
             {widgets.map((widget) => (
-              <BentoItem
+              <MemoizedBentoItem
                 key={widget.id}
                 widget={widget}
                 isEditMode={isEditMode}
-                onResize={updateWidgetSize}
-                onRemove={removeWidget}
+                onResize={handleResize}
+                onRemove={handleRemove}
               />
             ))}
-          </motion.div>
+          </div>
         </SortableContext>
 
         <DragOverlay adjustScale={true}>
