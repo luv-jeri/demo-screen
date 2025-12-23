@@ -88,12 +88,12 @@ function HomeContent() {
         <motion.div
           variants={fadeUp}
           transition={quickSpring}
-          className="text-center mb-6 md:mb-8"
+          className="text-center mb-theme"
         >
-          <h1 className="font-heading text-2xl md:text-3xl lg:text-4xl font-bold text-foreground tracking-tight leading-tight">
+          <h1 className="text-heading text-h1 font-bold text-foreground">
             What are you looking for?
           </h1>
-          <p className="text-sm md:text-base text-muted-foreground mt-2 max-w-md mx-auto">
+          <p className="text-body text-muted-foreground mt-2 max-w-md mx-auto">
             Search across all your assets, docs, and collections
           </p>
         </motion.div>

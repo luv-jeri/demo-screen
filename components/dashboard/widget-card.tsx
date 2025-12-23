@@ -202,8 +202,8 @@ export function WidgetCard({
   if (state === "loading") {
     return (
       <div className={cn(
-        "relative overflow-hidden",
-        "bg-card/50 border border-border/40",
+        "relative overflow-hidden rounded-theme",
+        "bg-card/50 border-theme border-border/40 shadow-theme",
         SIZE_HEIGHTS[size],
         className
       )}>
@@ -215,8 +215,8 @@ export function WidgetCard({
   if (state === "error") {
     return (
       <div className={cn(
-        "relative overflow-hidden",
-        "bg-card/50 border border-border/40",
+        "relative overflow-hidden rounded-theme",
+        "bg-card/50 border-theme border-border/40 shadow-theme",
         SIZE_HEIGHTS[size],
         className
       )}>
@@ -228,8 +228,8 @@ export function WidgetCard({
   if (state === "empty") {
     return (
       <div className={cn(
-        "relative overflow-hidden",
-        "bg-card/50 border border-border/40",
+        "relative overflow-hidden rounded-theme",
+        "bg-card/50 border-theme border-border/40 shadow-theme",
         SIZE_HEIGHTS[size],
         className
       )}>
@@ -241,11 +241,11 @@ export function WidgetCard({
   return (
     <motion.div
       className={cn(
-        "relative overflow-hidden",
-        // Subtle, glanceable design
-        "bg-card/60 border border-border/50",
+        "relative overflow-hidden rounded-theme",
+        // Subtle, glanceable design with theme utilities
+        "bg-card/60 border-theme border-border/50 shadow-theme",
         // Hover state (only when not editing)
-        !isEditing && "hover:bg-card/80 hover:border-border/70 transition-all duration-200",
+        !isEditing && "hover:bg-card/80 hover:border-border/70 hover:shadow-theme-elevated transition-all duration-200",
         // Size-based height
         SIZE_HEIGHTS[size],
         className

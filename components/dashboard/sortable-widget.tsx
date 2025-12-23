@@ -245,12 +245,12 @@ export function WidgetCard({
   return (
     <motion.div
       className={cn(
-        "relative",
+        "relative rounded-theme",
         "h-full overflow-hidden",
-        // Subtle background, softer border, minimal shadow
-        "bg-background/50 border border-border/40",
+        // Subtle background, softer border, minimal shadow with theme utilities
+        "bg-background/50 border-theme border-border/40 shadow-theme",
         SIZE_HEIGHTS[widget.size],
-        !isEditMode && "hover:bg-background hover:border-border/60 transition-all duration-200",
+        !isEditMode && "hover:bg-background hover:border-border/60 hover:shadow-theme-elevated transition-all duration-200",
         // Edit mode ring
         isEditMode && !isDragging && "ring-1 ring-accent/30 ring-offset-1 ring-offset-background",
         isDragging && "shadow-lg ring-2 ring-accent ring-offset-2 ring-offset-background cursor-grabbing bg-background",

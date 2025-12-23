@@ -111,12 +111,12 @@ export function SearchBar({ className, onSearch }: SearchBarProps) {
       {/* Mode Toggle - Clear Selection with Accent Color                   */}
       {/* ================================================================== */}
       <div className="flex items-center justify-center mb-6">
-        <div className="inline-flex items-center gap-1 p-1 bg-muted/40 border border-border/60 rounded-md shadow-sm">
+        <div className="inline-flex items-center gap-1 p-1 bg-muted/40 border border-border/60 rounded-theme shadow-sm">
           <button
             type="button"
             onClick={() => setMode("search")}
             className={cn(
-              "relative flex items-center gap-2 px-6 py-2.5 text-sm font-semibold transition-all duration-200 rounded-sm",
+              "relative flex items-center gap-2 px-6 py-2.5 text-sm font-semibold transition-all duration-200 rounded-theme-sm",
               mode === "search"
                 ? "bg-accent text-accent-foreground shadow-md"
                 : "bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/60"
@@ -129,7 +129,7 @@ export function SearchBar({ className, onSearch }: SearchBarProps) {
             type="button"
             onClick={() => setMode("chat")}
             className={cn(
-              "relative flex items-center gap-2 px-6 py-2.5 text-sm font-semibold transition-all duration-200 rounded-sm",
+              "relative flex items-center gap-2 px-6 py-2.5 text-sm font-semibold transition-all duration-200 rounded-theme-sm",
               mode === "chat"
                 ? "bg-accent text-accent-foreground shadow-md"
                 : "bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/60"
@@ -148,10 +148,10 @@ export function SearchBar({ className, onSearch }: SearchBarProps) {
         <div
           className={cn(
             "relative flex items-center",
-            "bg-background border-2 transition-all duration-300",
+            "bg-background border-theme border-border rounded-theme transition-all duration-300",
             isFocused
-              ? "border-accent shadow-[0_0_0_4px_rgba(161,255,98,0.15)]"
-              : "border-border hover:border-primary/30 shadow-sm"
+              ? "border-accent shadow-theme-elevated"
+              : "hover:border-primary/30 shadow-theme"
           )}
         >
           {/* Category Dropdown (left side) */}
