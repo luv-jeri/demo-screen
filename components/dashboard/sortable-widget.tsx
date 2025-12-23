@@ -10,9 +10,6 @@ import {
   Maximize2, 
   Minimize2,
   Square,
-  RectangleHorizontal,
-  RectangleVertical,
-  GripHorizontal,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
