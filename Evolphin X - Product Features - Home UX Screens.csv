@@ -1,0 +1,27 @@
+UX Screen,UX Module,Suggested Placement,Default Role Preset,Suggested UX Label,Priority,Description,Status,Current Owner,Estimation,Story Point Complexity,Figma Design Link
+Home,Search box,Hero,All,,,Main search input with scope picker. Enter query to return results + open search experience.,,,,,
+Home,Search controls bar (scope + filters + mode),Directly below Search box (hero sub-row),All,,,"A compact control strip around the main search: scope dropdown (All / Folder), mode toggles (Search / Conversations), quick filters dropdown, and “Advanced” link. User-adjustable and persists for next searches.
+",,,,,
+Home,Query Suggestions (chips),Hero (below search),All,Try asking,,Clickable chips generated from your recent searches + common org workflows. Clicking runs the query immediately (and opens results).,,,,,
+Home,Continue,,All,,,"Jump back into your last active items: last search, last chat thread, last viewed asset",,,,,
+Home,Continue > Recent chats,,All,,,Your latest chat threads (across files + within file). Click to resume.,,,,,
+Home,Continue > Recent searches,,All,,,Your latest search threads. Click to resume.,,,,,
+Home,Continue > Recent moments,,All,,,Your latest moments inside a video. Click to playback at the last point in the video you played,,,,,
+Home,Continue > Recent assets,,All,,,Your latest assets you viewed/downloaded. Click to jump to details page,,,,,
+Home,Continue > Recent folders,,All,,,Your latest folders you browsed. Click to jump to folder,,,,,
+Home,Team Pulse,,All,,,"Shows what teammates are doing right now: active searches, assets being viewed, and active chat threads (permission-aware), ingested files/folders.
+
+Toggle: Live / Last 24h. Admin > Privacy settings to turn this feature off or who can see it - managers vs team members",,,,,
+Home,Alerts,,"Media Ops, Archivist
+",Needs attention,,"High-signal issues: rights expiring, transcode failures, AI recognition failures , duplicates.
+",,,,,
+Home,Saved,,All,Saved,,"Your pinned searches, chats, assets, folders, moments, collections for fast access. Tabs: could be present in the saved details view. Note Momemt is a clip within a video that the user has bookmarked for playback from in/out time codes saved.",,,,,
+Home,Recommendations,,All,Recommended for you,,"Suggested assets/moments based on your activity + what your team is using/searching/viewing (permission-aware). Presented as a chips with thumbnails, hover scrub for videos.",,,,,
+Home,Ingest Status,,"Media Ops, Archivist",,,"Upload/processing status: queued, running, failed; quick link to details.",,,,,
+Home,Metadata Hygiene,,"Media Ops, Archivist",,,"Missing required fields, inconsistent values, and quick actions to fix or route. Our LLM will flag post-ingest metadata gotchas.",,,,,
+Home,Most used,,All,,,Most viewed/downloaded/shared assets (time window configurable).,,,,,
+Home,Quick actions,,All,,,"Shortcuts: Upload, Create workspace, Save an alert, Share results, Invite teammate.",,,,,
+Home,"Customization (widget editor)
+",Top-right in Home header (next to profile/settings),All,Customize,,"Opens “Edit Home” mode to add/remove widgets, drag to reorder, choose widget sizes, and apply a role-based preset as a starting point. Changes are permission-aware and saved per user (admin can publish defaults).",,,,,
+Home,Widget gallery (add widgets),Opens from “Customize”,,"Add widgets
+",,"Browse/search available Home widgets, preview sizes (S/M/L), and add to Home layout.",,,,,
