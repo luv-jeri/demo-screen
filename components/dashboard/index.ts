@@ -1,5 +1,5 @@
 // Main Dashboard Export
-export { WidgetDashboard, useHasWidgets } from "./widget-dashboard";
+export { WidgetDashboard } from "./widget-dashboard";
 
 // Context & Provider
 export { DashboardProvider, useDashboard } from "./widget-context";
@@ -8,7 +8,7 @@ export { DashboardProvider, useDashboard } from "./widget-context";
 export * from "./widget-types";
 
 // Widget Registry
-export { renderWidget, getWidgetComponent, isValidWidgetType } from "./widget-registry";
+export { renderWidget } from "./widget-registry";
 
 // Sortable Widget
 export { SortableWidget, WidgetCard } from "./sortable-widget";

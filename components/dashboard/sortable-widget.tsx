@@ -24,10 +24,9 @@ import {
 import { useDashboard } from "./widget-context";
 import { renderWidget } from "./widget-registry";
 import { 
-  SIZE_CLASSES,
+  SIZE_GRID_CLASSES,
   SIZE_HEIGHTS,
   WIDGET_SIZES, 
-  WIDGET_VARIANTS,
   WIDGET_DEFINITIONS,
   type WidgetConfig, 
   type WidgetSize 
@@ -41,25 +40,19 @@ const SIZE_ICONS: Record<WidgetSize, React.ReactNode> = {
   [WIDGET_SIZES.SMALL]: <Minimize2 className="size-4" />,
   [WIDGET_SIZES.MEDIUM]: <Square className="size-4" />,
   [WIDGET_SIZES.LARGE]: <Maximize2 className="size-4" />,
-  [WIDGET_SIZES.WIDE]: <RectangleHorizontal className="size-4" />,
-  [WIDGET_SIZES.TALL]: <RectangleVertical className="size-4" />,
 };
 
 const SIZE_LABELS: Record<WidgetSize, string> = {
   [WIDGET_SIZES.SMALL]: "Small",
   [WIDGET_SIZES.MEDIUM]: "Medium",
   [WIDGET_SIZES.LARGE]: "Large",
-  [WIDGET_SIZES.WIDE]: "Wide",
-  [WIDGET_SIZES.TALL]: "Tall",
 };
 
 // Ordered sizes for resize handle cycling
 const SIZE_ORDER: WidgetSize[] = [
   WIDGET_SIZES.SMALL,
   WIDGET_SIZES.MEDIUM,
-  WIDGET_SIZES.WIDE,
   WIDGET_SIZES.LARGE,
-  WIDGET_SIZES.TALL,
 ];
 
 // ============================================================================
@@ -90,9 +83,7 @@ export function SortableWidget({ widget, isEditMode, index = 0 }: SortableWidget
     transition,
   };
 
-  // Check if widget is independent (self-sizing)
   const definition = WIDGET_DEFINITIONS[widget.type];
-  const isIndependent = definition?.variant === WIDGET_VARIANTS.INDEPENDENT;
 
   // Staggered entrance delay (max 400ms total for 6 widgets)
   const entranceDelay = Math.min(index * 0.06, 0.4);
@@ -117,9 +108,7 @@ export function SortableWidget({ widget, isEditMode, index = 0 }: SortableWidget
       }}
       className={cn(
         "relative",
-        // For independent widgets, use simpler grid classes (they size themselves)
-        // self-start ensures they only take the space they need in the grid
-        isIndependent ? "col-span-1 self-start" : SIZE_CLASSES[widget.size],
+        SIZE_GRID_CLASSES[widget.size],
         isDragging && "z-50"
       )}
     >
@@ -236,7 +225,6 @@ export function WidgetCard({
   const { removeWidget, resizeWidget, getWidgetDefinition } = useDashboard();
   const definition = getWidgetDefinition(widget.type);
   const allowedSizes = definition?.allowedSizes || Object.values(WIDGET_SIZES);
-  const isIndependent = definition?.variant === WIDGET_VARIANTS.INDEPENDENT;
 
   // Handle resize by cycling through sizes
   const handleResize = React.useCallback((direction: "increase" | "decrease") => {
@@ -261,21 +249,16 @@ export function WidgetCard({
     <motion.div
       className={cn(
         "relative",
-        // Traditional widgets - LIGHTER styling for reduced visual noise
-        !isIndependent && [
-          "h-full overflow-hidden",
-          // Subtle background, softer border, minimal shadow
-          "bg-background/50 border border-border/40",
-          SIZE_HEIGHTS[widget.size],
-          !isEditMode && "hover:bg-background hover:border-border/60 transition-all duration-200",
-        ],
-        // Independent widgets: NO outer styling - completely transparent
-        isIndependent && "h-auto",
-        // Edit mode ring (only for traditional widgets)
-        isEditMode && !isIndependent && !isDragging && "ring-1 ring-accent/30 ring-offset-1 ring-offset-background",
+        "h-full overflow-hidden",
+        // Subtle background, softer border, minimal shadow
+        "bg-background/50 border border-border/40",
+        SIZE_HEIGHTS[widget.size],
+        !isEditMode && "hover:bg-background hover:border-border/60 transition-all duration-200",
+        // Edit mode ring
+        isEditMode && !isDragging && "ring-1 ring-accent/30 ring-offset-1 ring-offset-background",
         isDragging && "shadow-lg ring-2 ring-accent ring-offset-2 ring-offset-background cursor-grabbing bg-background",
       )}
-      whileHover={!isEditMode && !isIndependent ? { y: -1 } : undefined}
+      whileHover={!isEditMode ? { y: -1 } : undefined}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
     >
       {/* ================================================================== */}
@@ -356,10 +339,10 @@ export function WidgetCard({
       </AnimatePresence>
 
       {/* ================================================================== */}
-      {/* EDIT MODE: Size Badge (for traditional widgets)                   */}
+      {/* EDIT MODE: Size Badge                                             */}
       {/* ================================================================== */}
       <AnimatePresence>
-        {isEditMode && !isIndependent && (
+        {isEditMode && (
           <motion.div
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
@@ -377,7 +360,7 @@ export function WidgetCard({
       {/* EDIT MODE: Resize Handle (bottom-right corner, like textarea)     */}
       {/* ================================================================== */}
       <AnimatePresence>
-        {isEditMode && !isIndependent && (
+        {isEditMode && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -399,10 +382,7 @@ export function WidgetCard({
             exit={{ opacity: 0 }}
             className={cn(
               "absolute inset-0 z-10",
-              // Semi-transparent overlay for visual feedback
-              isIndependent 
-                ? "border-2 border-dashed border-accent/50 bg-accent/5" 
-                : "bg-transparent",
+              "bg-transparent",
               // Block ALL pointer events on widget content
               "pointer-events-auto"
             )}
@@ -418,7 +398,7 @@ export function WidgetCard({
       {/* ================================================================== */}
       <div 
         className={cn(
-          !isIndependent && "h-full",
+          "h-full",
           // In edit mode, content is below the overlay (z-10) so it can't be interacted with
           isEditMode && "pointer-events-none"
         )}
