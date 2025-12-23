@@ -29,12 +29,13 @@ export default function DashboardPage() {
       "relative h-dvh w-full overflow-hidden bg-background text-foreground flex flex-col transition-all duration-700",
       isEmpty ? "items-center justify-center p-8" : "p-6 md:p-8 lg:p-10"
     )}>
-      {/* Dot Pattern Background */}
+      {/* Dot Pattern Background with Glow Effect */}
       <DotPattern 
-        width={24} 
-        height={24} 
-        cr={1} 
-        className="fixed inset-0 z-0 opacity-30 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black_70%)]" 
+        glow={true}
+        width={20} 
+        height={20} 
+        cr={1.2} 
+        className="fixed inset-0 z-0 opacity-40 [mask-image:radial-gradient(600px_circle_at_center,white,transparent)]" 
       />
       {/* Zoom Control */}
       <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-black/40 backdrop-blur-xl p-2 rounded-full border border-white/10 shadow-2xl transition-opacity duration-300 hover:bg-black/60">
