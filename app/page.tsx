@@ -5,13 +5,14 @@ import { motion, AnimatePresence } from "motion/react";
 import { SearchBar } from "@/components/search-bar";
 import { BentoGrid } from "@/components/bento-grid";
 import { EmptyState } from "@/components/dashboard/empty-state";
+import { DotPattern } from "@/components/ui/dot-pattern";
 import { VARIANTS } from "@/lib/motion";
 import { useBentoStore } from "@/components/bento-store";
 import { cn } from "@/lib/utils";
 
 export default function DashboardPage() {
   const widgets = useBentoStore((state) => state.widgets);
-  const [zoom, setZoom] = useState(1);
+  const [zoom, setZoom] = useState(0.8); // Default to 80%
   const [hasHydrated, setHasHydrated] = useState(false);
 
   useEffect(() => {
@@ -25,9 +26,16 @@ export default function DashboardPage() {
 
   return (
     <div className={cn(
-      "h-dvh w-full overflow-hidden bg-background text-foreground flex flex-col transition-all duration-700",
+      "relative h-dvh w-full overflow-hidden bg-background text-foreground flex flex-col transition-all duration-700",
       isEmpty ? "items-center justify-center p-8" : "p-6 md:p-8 lg:p-10"
     )}>
+      {/* Dot Pattern Background */}
+      <DotPattern 
+        width={24} 
+        height={24} 
+        cr={1} 
+        className="fixed inset-0 z-0 opacity-30 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black_70%)]" 
+      />
       {/* Zoom Control */}
       <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-black/40 backdrop-blur-xl p-2 rounded-full border border-white/10 shadow-2xl transition-opacity duration-300 hover:bg-black/60">
         <button 
@@ -64,12 +72,15 @@ export default function DashboardPage() {
 
         {/* Header Section - Fixed Size - Polished Hero */}
         <div className="flex-none space-y-8 md:space-y-10 relative pt-8 shrink-0 z-10 text-center">
-          <motion.div variants={VARIANTS.fadeInUp} className="space-y-3">
-            {/* Polished Hero Text */}
-            <h1 className="text-[clamp(3.5rem,6vw,6.5rem)] font-thin tracking-tighter text-white leading-[0.9] font-heading select-none">
-              Limitless<br />
-              <span className="text-white/50">Possibilities</span>
+          <motion.div variants={VARIANTS.fadeInUp} className="space-y-2">
+            {/* Creative Workspace Hero Text */}
+            <h1 className="text-[clamp(3rem,5.5vw,5.5rem)] font-thin tracking-tighter text-white leading-[0.95] font-heading select-none">
+              Every Asset.<br />
+              <span className="text-white/60">One Place.</span>
             </h1>
+            <p className="text-sm md:text-base text-muted-foreground/60 font-light tracking-wide pt-2">
+              Create • Organize • Deliver
+            </p>
           </motion.div>
 
           {/* Search Input */}

@@ -86,11 +86,11 @@
   --ring: #B4F558;
 
   /* Sidebar - Distinct Tone for Color Contrast */
-  --sidebar: #0C0C0C; /* Slightly lighter than main background */
-  --sidebar-foreground: #999999;
+  --sidebar: #101010; /* More contrast - lighter than main #050505 */
+  --sidebar-foreground: #A0A0A0;
   --sidebar-primary: #B4F558;
   --sidebar-primary-foreground: #000000;
-  --sidebar-accent: #181818;
+  --sidebar-accent: #1A1A1A;
   --sidebar-active-foreground: #EDEDED;
   --sidebar-border: transparent; /* Removed border, rely on color contrast */
   --sidebar-ring: #B4F558;
