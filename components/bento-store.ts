@@ -13,7 +13,13 @@ export type WidgetType =
   | "compliance"
   | "scratchpad"
   | "spotlight"
-  | "promo";
+  | "promo"
+  | "activity"
+  | "quick-actions"
+  | "storage"
+  | "system"
+  | "time"
+  | "welcome";
 
 export type WidgetSize = "1x1" | "2x1" | "1x2" | "2x2" | "4x1" | "4x2";
 
@@ -37,16 +43,22 @@ export interface BentoState {
 }
 
 // ============================================================================
-// Initial State
+// Initial State - ALL 12 WIDGETS
 // ============================================================================
 
 const DEFAULT_WIDGETS: WidgetConfig[] = [
   { id: "w-spotlight", type: "spotlight", size: "4x2" },
+  { id: "w-welcome", type: "welcome", size: "2x1" },
   { id: "w-promo", type: "promo", size: "2x1" },
   { id: "w-trend", type: "trend-radar", size: "2x2" },
   { id: "w-health", type: "workspace-health", size: "2x2" },
   { id: "w-compliance", type: "compliance", size: "1x2" },
+  { id: "w-activity", type: "activity", size: "1x2" },
   { id: "w-scratch", type: "scratchpad", size: "2x2" },
+  { id: "w-storage", type: "storage", size: "1x1" },
+  { id: "w-system", type: "system", size: "1x1" },
+  { id: "w-time", type: "time", size: "1x1" },
+  { id: "w-quick", type: "quick-actions", size: "1x1" },
 ];
 
 // ============================================================================
