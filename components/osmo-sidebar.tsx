@@ -5,21 +5,17 @@ import { motion, AnimatePresence } from "motion/react";
 import { 
   Box, 
   Layers, 
-  Zap, 
-  Square, 
-  Type, 
   Settings, 
-  HelpCircle,
   User,
   ChevronLeft,
-  ChevronRight,
   ChevronDown,
   LayoutGrid,
   Image as ImageIcon,
   Video,
   Music,
   FileText,
-  FolderOpen
+  FolderOpen,
+  ChevronRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -56,8 +52,8 @@ type NavGroup = {
 const NAV_GROUPS: NavGroup[] = [
   {
     items: [
-      { label: "Overview", icon: LayoutGrid, href: "/", isActive: true },
-      { label: "Everything", icon: Layers, href: "/everything" },
+      { label: "Search", icon: LayoutGrid, href: "/", isActive: true },
+      { label: "Chat", icon: Layers, href: "/chat" },
     ]
   },
   {
@@ -74,21 +70,6 @@ const NAV_GROUPS: NavGroup[] = [
         ]
       },
       { label: "Collections", icon: FolderOpen, href: "/collections" },
-      { label: "Utilities", icon: Zap, href: "/utilities" },
-    ]
-  },
-  {
-    label: "Resources",
-    items: [
-      { label: "Tokens", icon: Square, href: "/icons" },
-      { label: "Typography", icon: Type, href: "/typography" },
-    ]
-  },
-  {
-    label: "System",
-    items: [
-      { label: "Settings", icon: Settings, href: "/settings" },
-      { label: "Support", icon: HelpCircle, href: "/help" },
     ]
   }
 ];
@@ -172,8 +153,20 @@ export function OsmoSidebar() {
           ))}
         </div>
 
-        {/* Footer / Profile - REMOVED border-t for cleaner look */}
-        <div className="p-4 bg-transparent">
+        {/* Footer - Settings & Profile */}
+        <div className="p-4 bg-transparent space-y-2">
+          {/* Settings Button */}
+          <button className={cn(
+            "flex items-center gap-3 w-full p-2.5 rounded-xl hover:bg-white/5 transition-all duration-300 group text-left border border-transparent hover:border-white/5",
+            isCollapsed && "justify-center p-2"
+          )}>
+            <Settings className="size-4 text-muted-foreground group-hover:text-white transition-colors" />
+            {!isCollapsed && (
+              <span className="text-sm text-muted-foreground group-hover:text-white transition-colors">Settings</span>
+            )}
+          </button>
+
+          {/* User Profile */}
           <button className={cn(
             "flex items-center gap-3 w-full p-2.5 rounded-xl hover:bg-white/5 transition-all duration-300 group text-left border border-transparent hover:border-white/5",
             isCollapsed && "justify-center p-0 size-11 rounded-full"
@@ -193,7 +186,7 @@ export function OsmoSidebar() {
                   Admin User
                 </p>
                 <div className="flex items-center gap-1.5">
-                    <div className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <div className="size-1.5 rounded-full bg-emerald-500" />
                     <p className="text-[11px] text-muted-foreground truncate">Online</p>
                 </div>
               </motion.div>
