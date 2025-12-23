@@ -8,342 +8,159 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-heading: var(--font-heading);
-  --font-sans: var(--font-sans);
+  
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-active-foreground);
+  
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
   
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-
-  /* Status colors */
-  --color-success: var(--success);
-  --color-success-foreground: var(--success-foreground);
-  --color-warning: var(--warning);
-  --color-warning-foreground: var(--warning-foreground);
-  --color-info: var(--info);
-  --color-info-foreground: var(--info-foreground);
-  
-  /* Sidebar items */
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-heading);
 }
 
 :root {
-  /* Osmo Supply Inspired Palette - Light Industrial */
-  --background: #F4F4F4;  /* Premium Light Grey */
-  --foreground: #201D1D;  /* Soft Black */
+  /* 
+   * OSMO INSPIRED PALETTE - "Dark Premium" 
+   * Strict adherence to maintaining visual depth without heavy shadows.
+   */
 
-  --card: #FFFFFF;
-  --card-foreground: #201D1D;
+  /* Base Layer - Deepest Black */
+  --background: #050505; 
+  --foreground: #EDEDED;
 
-  --popover: #FFFFFF;
-  --popover-foreground: #201D1D;
+  /* Surfaces - Subtle separation */
+  --card: #0F0F0F;
+  --card-foreground: #EDEDED;
 
-  --primary: #201D1D;
-  --primary-foreground: #F4F4F4;
+  --popover: #0F0F0F;
+  --popover-foreground: #EDEDED;
 
-  --secondary: #E1E1E1;
-  --secondary-foreground: #201D1D;
+  --primary: #EDEDED;
+  --primary-foreground: #050505;
 
-  --muted: #EAEAEA;
-  --muted-foreground: #525252; /* Darker for better readability */
+  --secondary: #1A1A1A;
+  --secondary-foreground: #EDEDED;
 
-  --accent: #A1FF62; /* Osmo Lime */
-  --accent-foreground: #101808;
+  --muted: #1A1A1A;
+  --muted-foreground: #888888;
 
-  --destructive: #FF4545;
-  --destructive-foreground: #FFFFFF;
+  /* Brand Accent - The "Osmo Green" */
+  --accent: #B4F558;
+  --accent-foreground: #000000;
 
-  --border: #E1E1E1; /* Subtle Divider */
-  --input: #E1E1E1;
-  --ring: #201D1D;
+  --destructive: #7F1D1D;
+  --destructive-foreground: #EDEDED;
 
-  --radius: 0rem; /* Industrial = Sharp or Pill, default sharp for now */
-  
-  /* Sidebar */
-  --sidebar: #F4F4F4;
-  --sidebar-foreground: #201D1D;
-  --sidebar-primary: #201D1D;
-  --sidebar-primary-foreground: #F4F4F4;
-  --sidebar-accent: #A1FF62;
-  --sidebar-accent-foreground: #101808;
-  --sidebar-border: #E1E1E1;
-  --sidebar-ring: #201D1D;
+  /* Borders - Very subtle, almost invisible */
+  --border: #1F1F1F;
+  --input: #1F1F1F;
+  --ring: #B4F558;
 
-  /* Status colors */
-  --success: #22C55E;
-  --success-foreground: #FFFFFF;
-  --warning: #F59E0B;
-  --warning-foreground: #FFFFFF;
-  --info: #3B82F6;
-  --info-foreground: #FFFFFF;
+  /* Sidebar - Distinct Tone for Color Contrast */
+  --sidebar: #0C0C0C; /* Slightly lighter than main background */
+  --sidebar-foreground: #999999;
+  --sidebar-primary: #B4F558;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #181818;
+  --sidebar-active-foreground: #EDEDED;
+  --sidebar-border: transparent; /* Removed border, rely on color contrast */
+  --sidebar-ring: #B4F558;
 
-  /* Typography */
-  --font-size-base: 15px;
-  --line-height-base: 1.6;
-  --heading-scale: 1.25;
-  --letter-spacing: 0em;
-
-  /* Spacing */
-  --spacing-unit: 4px;
-  --spacing-gap: 1rem;
-  --icon-size: 20px;
-
-  /* Shadows */
-  --shadow-card: 0 2px 8px rgba(0,0,0,0.06);
-  --shadow-elevated: 0 4px 16px rgba(0,0,0,0.1);
-
-  /* Borders */
-  --border-width: 1px;
+  /* Radius - Soft but structural */
+  --radius: 14px;
 }
 
-.dark {
-  /* Dark Mode Backup (If user toggles, though we prioritize Light) */
-  --background: #0A0A0A;
-  --foreground: #F4F4F4;
-
-  --card: #121212;
-  --card-foreground: #F4F4F4;
-
-  --popover: #121212;
-  --popover-foreground: #F4F4F4;
-
-  --primary: #F4F4F4;
-  --primary-foreground: #0A0A0A;
-
-  --secondary: #262626;
-  --secondary-foreground: #F4F4F4;
-
-  --muted: #262626;
-  --muted-foreground: #A1A1A1;
-
-  --accent: #A1FF62;
-  --accent-foreground: #0A0A0A;
-
-  --destructive: #7f1d1d;
-  --destructive-foreground: #F4F4F4;
-
-  --border: #262626;
-  --input: #262626;
-  --ring: #A1FF62;
-  
-  --sidebar: #0A0A0A;
-  --sidebar-foreground: #F4F4F4;
-  --sidebar-primary: #A1FF62;
-  --sidebar-primary-foreground: #0A0A0A;
-  --sidebar-accent: #262626;
-  --sidebar-accent-foreground: #F4F4F4;
-  --sidebar-border: #262626;
-  --sidebar-ring: #A1FF62;
-}
-
+/* Base Styles */
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
-    font-family: var(--font-family, var(--font-sans, system-ui)), system-ui, sans-serif;
-    font-size: var(--font-size-base, 15px);
-    line-height: var(--line-height-base, 1.6);
-    letter-spacing: var(--letter-spacing, 0em);
+    @apply bg-background text-foreground antialiased selection:bg-accent/20 selection:text-accent-foreground;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--heading-family, var(--font-heading, system-ui)), system-ui, sans-serif;
-    @apply tracking-tight font-bold;
+    font-family: var(--font-heading);
   }
-  h1 { @apply text-3xl md:text-4xl; }
-  h2 { @apply text-2xl md:text-3xl; }
-  h3 { @apply text-xl md:text-2xl; }
 }
 
-/* Utilities */
-.scrollbar-none {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.scrollbar-none::-webkit-scrollbar {
-  display: none;
-}
-
-/* Thin scrollbar for widget areas */
-.scrollbar-thin {
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-}
-.scrollbar-thin::-webkit-scrollbar {
+/* Custom Scrollbar - Global */
+::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
-.scrollbar-thin::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: transparent;
 }
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: var(--border);
-  border-radius: 3px;
+::-webkit-scrollbar-thumb {
+  @apply bg-zinc-800 rounded-full hover:bg-zinc-700 transition-colors cursor-pointer;
+  border: 1px solid transparent;
+  background-clip: content-box;
 }
-.scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background-color: var(--muted-foreground);
-}
-
-/* Aceternity-style Grid Background with Radial Fade */
-.bg-grid-pattern {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
-/* Grid with radial gradient mask - for dramatic center focus */
-.bg-grid-pattern::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, transparent 0%, var(--background) 70%);
-  pointer-events: none;
-}
+/* Utilities */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* Hides scrollbar but creates space */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .no-scrollbar::-webkit-scrollbar {
+      display: none;
+  }
+  .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+  }
 
-/* Dot pattern variant */
-.bg-dot-pattern {
-  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-
-/* Grid small pattern */
-.bg-grid-small-pattern {
-  background-size: 20px 20px;
-  background-image: 
-    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
-}
-
-/* Marquee Animation */
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.animate-marquee {
-  animation: marquee 30s linear infinite;
-}
-
-/* Sidebar Focus States */
-aside a:focus-visible,
-aside button:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
-}
-
-/* ============================================================================
-   Theme Utility Classes - Consume CSS Variables
-   ============================================================================ */
-
-/* Spacing utilities that respond to theme density */
-.gap-theme { gap: var(--spacing-gap); }
-.gap-theme-sm { gap: calc(var(--spacing-gap) * 0.5); }
-.gap-theme-lg { gap: calc(var(--spacing-gap) * 1.5); }
-.p-theme { padding: var(--spacing-gap); }
-.p-theme-sm { padding: calc(var(--spacing-gap) * 0.5); }
-.p-theme-lg { padding: calc(var(--spacing-gap) * 1.5); }
-.px-theme { padding-left: var(--spacing-gap); padding-right: var(--spacing-gap); }
-.py-theme { padding-top: var(--spacing-gap); padding-bottom: var(--spacing-gap); }
-.m-theme { margin: var(--spacing-gap); }
-.mb-theme { margin-bottom: var(--spacing-gap); }
-.mt-theme { margin-top: var(--spacing-gap); }
-
-/* Radius utilities with guardrails (capped to prevent circle-ification) */
-.rounded-theme { border-radius: var(--radius) !important; }
-.rounded-theme-sm { border-radius: calc(var(--radius) * 0.5) !important; }
-.rounded-theme-lg { border-radius: calc(var(--radius) * 1.5) !important; }
-/* Pill shape is intentional - use for buttons, badges, pills */
-.rounded-theme-pill { border-radius: 9999px !important; }
-
-/* Shadow utilities */
-.shadow-theme { box-shadow: var(--shadow-card); }
-.shadow-theme-elevated { box-shadow: var(--shadow-elevated); }
-.shadow-theme-none { box-shadow: none; }
-
-/* Border utilities */
-.border-theme { border-width: var(--border-width); border-style: solid; }
-
-/* Typography utilities */
-.text-heading {
-  font-family: var(--heading-family, var(--font-heading, system-ui));
-  letter-spacing: var(--letter-spacing, 0em);
-}
-.text-body {
-  font-family: var(--font-family, var(--font-sans, system-ui));
-  font-size: var(--font-size-base, 15px);
-  line-height: var(--line-height-base, 1.6);
-  letter-spacing: var(--letter-spacing, 0em);
-}
-.tracking-theme { letter-spacing: var(--letter-spacing); }
-
-/* Heading sizes calculated from base + scale */
-.text-h1 {
-  font-size: calc(var(--font-size-base) * var(--heading-scale) * var(--heading-scale) * var(--heading-scale));
-  line-height: 1.2;
-}
-.text-h2 {
-  font-size: calc(var(--font-size-base) * var(--heading-scale) * var(--heading-scale));
-  line-height: 1.25;
-}
-.text-h3 {
-  font-size: calc(var(--font-size-base) * var(--heading-scale));
-  line-height: 1.3;
-}
-
-/* Icon sizing utility */
-.icon-theme {
-  width: var(--icon-size);
-  height: var(--icon-size);
-}
-
-/* ============================================================================
-   Widget Dashboard Styles (dnd-kit)
-   ============================================================================ */
-
-/* Widget Container */
-.widget-container {
-  height: 100%;
-}
-
-.widget-container > * {
-  height: 100%;
-}
-
-/* Smooth transitions for dragging */
-[data-dnd-kit-dragging] {
-  opacity: 0.5;
-}
-
-/* Widget drag overlay */
-.widget-drag-overlay {
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  transform: scale(1.02);
+  /* Marquee Animation */
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .animate-marquee {
+    animation: marquee 25s linear infinite;
+  }
+  .pause-on-hover:hover {
+    animation-play-state: paused;
+  }
 }
