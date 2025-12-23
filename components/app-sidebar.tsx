@@ -78,35 +78,35 @@ const NAVIGATION_GROUPS: NavGroup[] = [
   {
     label: "Library",
     items: [
-      { title: "All Assets", url: "/assets", icon: LayoutGrid },
-      { title: "Collections", url: "/collections", icon: FolderOpen },
-      { title: "Upload", url: "/upload", icon: Upload },
+      { title: "All Assets", url: "#", icon: LayoutGrid },
+      { title: "Collections", url: "#", icon: FolderOpen },
+      { title: "Upload", url: "#", icon: Upload },
     ],
   },
   {
     label: "Media Types",
     items: [
-      { title: "Images", url: "/browse/images", icon: Image },
-      { title: "Videos", url: "/browse/videos", icon: Film },
-      { title: "Audio", url: "/browse/audio", icon: Music },
-      { title: "Documents", url: "/browse/documents", icon: FileText },
+      { title: "Images", url: "#", icon: Image },
+      { title: "Videos", url: "#", icon: Film },
+      { title: "Audio", url: "#", icon: Music },
+      { title: "Documents", url: "#", icon: FileText },
     ],
   },
   {
     label: "Quick Access",
     items: [
-      { title: "Recent", url: "/recent", icon: Clock },
-      { title: "Starred", url: "/starred", icon: Star },
-      { title: "Archive", url: "/archive", icon: Archive },
-      { title: "Trash", url: "/trash", icon: Trash2 },
+      { title: "Recent", url: "#", icon: Clock },
+      { title: "Starred", url: "#", icon: Star },
+      { title: "Archive", url: "#", icon: Archive },
+      { title: "Trash", url: "#", icon: Trash2 },
     ],
   },
   {
     label: "Workspace",
     items: [
-      { title: "Tags", url: "/tags", icon: Tags },
-      { title: "Shared", url: "/shared", icon: Share2, badge: "3" },
-      { title: "Team", url: "/team", icon: Users },
+      { title: "Tags", url: "#", icon: Tags },
+      { title: "Shared", url: "#", icon: Share2, badge: "3" },
+      { title: "Team", url: "#", icon: Users },
     ],
   },
 ];
@@ -312,7 +312,7 @@ function RecentSection({ collapsed }: { collapsed: boolean }) {
           {RECENT_ITEMS.map((item) => (
             <Link
               key={item.id}
-              href={`/drawer/${item.id}`}
+              href="#"
               className="group flex items-center gap-3 px-3 py-2 rounded-sm text-[13px] text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
             >
               {item.type === "chat" ? (
@@ -384,12 +384,12 @@ function UserMenu({ collapsed }: { collapsed: boolean }) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-border" />
         <DropdownMenuItem asChild>
-          <Link href="/account" className="cursor-pointer">
+          <Link href="#" className="cursor-pointer">
             <User2 className="mr-2 size-4" /> Account
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/billing" className="cursor-pointer">
+          <Link href="#" className="cursor-pointer">
             <CreditCard className="mr-2 size-4" /> Billing
           </Link>
         </DropdownMenuItem>
@@ -408,7 +408,7 @@ function UserMenu({ collapsed }: { collapsed: boolean }) {
 
 export function AppSidebar() {
   const { isOpen, isCollapsed, isMobile, toggle, close } = useSidebar();
-  const [isDarkMode, setIsDarkMode] = React.useState(false);
+  const [isDarkMode, setIsDarkMode] = React.useState(true);
 
   const toggleDarkMode = () => {
     setIsDarkMode((v) => !v);
@@ -509,7 +509,7 @@ export function AppSidebar() {
               <SectionHeader label={group.label} collapsed={collapsed} />
               <div className="space-y-0.5 px-1">
                 {group.items.map((item) => (
-                  <NavLink key={item.url} item={item} collapsed={collapsed} />
+                  <NavLink key={item.title} item={item} collapsed={collapsed} />
                 ))}
               </div>
               {idx < NAVIGATION_GROUPS.length - 1 && <SidebarSeparator />}
@@ -526,7 +526,7 @@ export function AppSidebar() {
         <div className="relative border-t border-sidebar-border p-2 space-y-0.5 bg-muted/20">
           {/* Settings */}
           <Link
-            href="/settings"
+            href="#"
             className={cn(
               "group flex items-center gap-3 px-3 py-2.5 rounded-sm text-[14px] font-medium transition-colors",
               "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -540,7 +540,7 @@ export function AppSidebar() {
 
           {/* Help */}
           <Link
-            href="/help"
+            href="#"
             className={cn(
               "group flex items-center gap-3 px-3 py-2.5 rounded-sm text-[14px] font-medium transition-colors",
               "text-muted-foreground hover:bg-muted hover:text-foreground",

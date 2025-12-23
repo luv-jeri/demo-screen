@@ -76,19 +76,19 @@ export const navigationGroups: NavGroup[] = [
     items: [
       {
         title: "All Assets",
-        url: "/assets",
+        url: "#",
         icon: LayoutGrid,
         description: "Browse your entire media library",
       },
       {
         title: "Collections",
-        url: "/collections",
+        url: "#",
         icon: FolderOpen,
         description: "Organized asset collections",
       },
       {
         title: "Upload",
-        url: "/upload",
+        url: "#",
         icon: Upload,
         description: "Add new media to your library",
       },
@@ -101,22 +101,22 @@ export const navigationGroups: NavGroup[] = [
     items: [
       {
         title: "Images",
-        url: "/browse/images",
+        url: "#",
         icon: Image,
       },
       {
         title: "Videos",
-        url: "/browse/videos",
+        url: "#",
         icon: Film,
       },
       {
         title: "Audio",
-        url: "/browse/audio",
+        url: "#",
         icon: Music,
       },
       {
         title: "Documents",
-        url: "/browse/documents",
+        url: "#",
         icon: FileText,
       },
     ],
@@ -128,22 +128,22 @@ export const navigationGroups: NavGroup[] = [
     items: [
       {
         title: "Recent",
-        url: "/recent",
+        url: "#",
         icon: Clock,
       },
       {
         title: "Starred",
-        url: "/starred",
+        url: "#",
         icon: Star,
       },
       {
         title: "Archive",
-        url: "/archive",
+        url: "#",
         icon: Archive,
       },
       {
         title: "Trash",
-        url: "/trash",
+        url: "#",
         icon: Trash2,
       },
     ],
@@ -155,18 +155,18 @@ export const navigationGroups: NavGroup[] = [
     items: [
       {
         title: "Tags",
-        url: "/tags",
+        url: "#",
         icon: Tags,
       },
       {
         title: "Shared",
-        url: "/shared",
+        url: "#",
         icon: Share2,
         badge: "3",
       },
       {
         title: "Team",
-        url: "/team",
+        url: "#",
         icon: Users,
       },
     ],
@@ -180,12 +180,12 @@ export const navigationGroups: NavGroup[] = [
 export const footerNavItems: NavItem[] = [
   {
     title: "Settings",
-    url: "/settings",
+    url: "#",
     icon: Settings,
   },
   {
     title: "Help & Support",
-    url: "/help",
+    url: "#",
     icon: HelpCircle,
   },
 ];

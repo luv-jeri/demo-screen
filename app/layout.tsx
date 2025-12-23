@@ -51,7 +51,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body
         suppressHydrationWarning
         className={`${hafferXH.variable} ${hafferSans.variable} antialiased bg-background text-foreground selection:bg-accent selection:text-accent-foreground`}

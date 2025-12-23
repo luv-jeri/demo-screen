@@ -166,7 +166,7 @@ function DrawerItemComponent({ item, collapsed }: { item: DrawerItem; collapsed:
 
   return (
     <Link
-      href={`/drawer/${item.id}`}
+      href="#"
       className={cn(
         "flex items-center gap-3 px-3 py-2 rounded-sm text-sm transition-all duration-150",
         "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -184,7 +184,7 @@ function DrawerItemComponent({ item, collapsed }: { item: DrawerItem; collapsed:
 // ============================================================================
 export function Sidebar() {
   const { isOpen, isCollapsed, isMobile, toggle, close } = useSidebar();
-  const [isDarkMode, setIsDarkMode] = React.useState(false);
+  const [isDarkMode, setIsDarkMode] = React.useState(true);
 
   const toggleDarkMode = () => {
     setIsDarkMode((v) => !v);

@@ -6,7 +6,7 @@ import {
   SidebarInset,
   SidebarTrigger,
   AppSidebar,
-} from "@/components/app-sidebar";
+} from "@/components/sidebar-new";
 
 interface AppShellProps {
   children: React.ReactNode;
